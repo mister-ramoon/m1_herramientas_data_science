@@ -1,0 +1,317 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Gráficos básicos en R
+
+### Vector
+```{r}
+# Grafico de los elementos sobre su índice (por lo general, de puntos).
+c <- c(1, 5, 8, 9, 10, 3, 5)
+plot(c)
+```
+### Factor
+```{r}
+#Se representarán los valores de la variable numérica en función de cada factor de la variable categórica en forma de barra vertical.
+fact <- factor(c("BUENO", "MALO", "MALO", "BUENO", "BUENO", "BUENO", "BUENO"))
+plot(fact)
+```
+
+### Matriz
+```{r}
+# Diagrama de dispersión de la segunda columna sobre la primera (a no ser que se especifique otro orden).
+my.mat <- matrix(1:30, nrow = 10, ncol = 3)
+plot(my.mat)
+plot(my.mat[, 2], my.mat[, 3])
+```
+
+```{r}
+# Matriz gráfica de visualización entre pares (diagrama pairs). Se muestra una gráfica para todas las variables entre sí, es decir, la primera con la segunda, la primera con la tercera, etc.
+plot(iris)
+```
+
+### Vectores numéricos
+```{r}
+# Nube de puntos de “y” sobre “x”.
+v.1 <- 1:100
+v.2 <- v.1^2
+
+plot(v.1, v.2)
+```
+### Si “x” es factor e “y” es un vector numérico
+```{r}
+x <- fact
+y <- c(50, 21, 35, 48, 6, 75, 63)
+
+plot(x, y)
+```
+
+### Si ambas variables son factor
+```{r}
+new.fact <- factor(c("UNO", "DOS", "UNO", "DOS", "DOS", "DOS", "UNO"))
+plot(new.fact, fact)
+```
+
+## Elementos básicos de una visualización en R
+```{r}
+# Diagrama de dispersión
+vec.1 <- sample(1:1000, 100, replace = T)
+vec.2 <- sample(1:1000, 100, replace = T)
+
+plot(vec.1, vec.2)
+
+# ylab: texto en eje “y”.
+# xlab: texto en eje “x”.
+# main: título de la gráfica.
+# cex.main: cambiar el tamaño de fuente.
+# cex.lab: aumentar el tamaño de los ejes.
+# col.lab: cambiar color de columnas.
+# col.main: cambiar color de título.
+plot(vec.1, vec.2, 
+     ylab = "Vector 2", 
+     xlab = "Vector 1", 
+     main = "Scatter plot X ~ Y", 
+     cex.lab = 1.5,
+     cex.main = 3,
+     col.lab = "red", 
+     col.main = "blue")
+
+```
+```{r}
+# las: modificar la posición del texto de los valores de los ejes.
+
+# Mostrar horizontal.
+plot(vec.1, vec.2, 
+     ylab = "Vector 2", 
+     xlab = "Vector 1", 
+     main = "Scatter plot X ~ Y", 
+     las = 1)
+
+# Mostrar perpendicular al eje.
+plot(vec.1, vec.2, 
+     ylab = "Vector 2", 
+     xlab = "Vector 1", 
+     main = "Scatter plot X ~ Y", 
+     las = 2)
+
+# Mostrar vertical.
+plot(vec.1, vec.2, 
+     ylab = "Vector 2", 
+     xlab = "Vector 1", 
+     main = "Scatter plot X ~ Y", 
+     las = 3)
+
+```
+
+### Tipos de gráficos con parámetro type.
+```{r}
+# p: Representación con puntos.
+plot(vec.1, vec.2, 
+     ylab = "Vector 2", 
+     xlab = "Vector 1", 
+     main = "Scatter plot X ~ Y", 
+     las = 1,
+     type = 'p')
+
+# l: Representación con líneas.
+plot(vec.1, vec.2, 
+     ylab = "Vector 2", 
+     xlab = "Vector 1", 
+     main = "Scatter plot X ~ Y", 
+     las = 1,
+     type = 'l')
+
+# b: puntos y líneas.
+plot(vec.1, vec.2, 
+     ylab = "Vector 2", 
+     xlab = "Vector 1", 
+     main = "Scatter plot X ~ Y", 
+     las = 1,
+     type = 'b')
+
+# c: solo las líneas sin el punto de unión.
+plot(vec.1, vec.2, 
+     ylab = "Vector 2", 
+     xlab = "Vector 1", 
+     main = "Scatter plot X ~ Y", 
+     las = 1,
+     type = 'c')
+
+# o: se representan las líneas por encima de los puntos.
+plot(vec.1, vec.2, 
+     ylab = "Vector 2", 
+     xlab = "Vector 1", 
+     main = "Scatter plot X ~ Y", 
+     las = 1,
+     type = 'o')
+
+# h: Representación con histograma.
+plot(vec.1, vec.2, 
+     ylab = "Vector 2", 
+     xlab = "Vector 1", 
+     main = "Scatter plot X ~ Y", 
+     las = 1,
+     type = 'h')
+
+# s: Mostrar la gráfica de forma escalonada (steps).
+plot(vec.1, vec.2, 
+     ylab = "Vector 2", 
+     xlab = "Vector 1", 
+     main = "Scatter plot X ~ Y", 
+     las = 1,
+     type = 's')
+```
+
+### Estilos para gráficas
+```{r}
+# col: cambiar color de elementos.
+# cex: aumentar tamaño de puntos.
+# lwd: aumentar tamaño de líneas
+# lty: cambiar el tipo de línea.
+plot(v.1, v.2, 
+     xlab = "Lineal", 
+     ylab = "Cuadrática", 
+     main = "Representación cuadrática",
+     col = 'blue',
+     cex = 1)
+
+plot(v.1, v.2, 
+     xlab = "Lineal", 
+     ylab = "Cuadrática", 
+     main = "Representación cuadrática",
+     col = 'red',
+     cex = 5)
+
+plot(v.1, v.2, 
+     xlab = "Lineal", 
+     ylab = "Cuadrática", 
+     main = "Representación cuadrática",
+     col = 'blue',
+     type = "l",
+     lwd = 7)
+
+plot(v.1, v.2, 
+     xlab = "Lineal", 
+     ylab = "Cuadrática", 
+     main = "Representación cuadrática",
+     col = 'green',
+     type = "l",
+     lwd = 3,
+     lty = 3)
+
+# legend: Valor que tendrá cada valor que se muestre en la leyenda.
+# title: Título de la leyenda.
+legend("topleft", legend = c("Cuadrática ~ Lineal"),
+       col = c("darkgreen"),
+       lty=c(3),
+       lwd = 3,
+       title = "Leyenda")
+```
+
+### Multiple visualización
+```{r}
+# función par: crear varios tipos de visualización
+# parametro mfrow: distribuir los gráficos de filas a columnas.
+# parametro mfcol: distribuiar los gráficos de columnas a filas.
+
+par(mfrow=c(2,2))
+
+# Fila 1, columna 1
+plot(v.1, v.2, 
+     xlab = "Lineal", 
+     ylab = "Cuadrática", 
+     main = "Representación cuadrática",
+     col = 'darkgreen',
+     type = "l",
+     lwd = 3,
+     lty = 3)
+
+# Fila 2, columna 1
+plot(fact)
+
+# Fila 1, columna 2
+plot(x, y)
+
+# Fila 2, columna 2
+plot(x, y)
+```
+
+### Guardar gráficas en formatos JPEF, PNG o PDF
+```{r}
+pdf("Lineal_y_cuadrática.pdf")
+
+plot(v.1, v.2, 
+   xlab = "Lineal", 
+   ylab = "Cuadrática", 
+   main = "Representación cuadrática",
+   col = 'darkgreen',
+   type = "l",
+   lwd = 3,
+   lty = 3)
+
+legend("topleft", legend = c("Cuadrática ~ Lineal"),
+       col = c("darkgreen"),
+       lty=c(3),
+       lwd = 3,
+       title = "Leyenda")
+
+dev.off()
+```
+
+## Tipos de gráficos en R
+```{r}
+# hist: Histograma
+normal.values <-rnorm(1000,0,1)
+
+hist(normal.values, 
+     ylab = "Frecuencia", 
+     xlab = "Valores",
+     main = "Histograma", 
+     col = "grey", 
+     border = "blue")
+
+# boxplot: diagrama de caja
+boxplot(normal.values, 
+        border = "darkgreen", 
+        col = "darkseagreen", 
+        main = "Boxplot", 
+        las = 1,
+        outcol="darkred")
+
+# barplot: diagrama de barras.
+barplot(normal.values, border = rainbow(length(normal.values)))
+
+v <- c(100, 32, 87, 57, 110)
+barplot(v, main = "Diagrama de barras", xlab="Componentes", ylab="Valor", col = c("blue", "red", "green", "yellow", "tomato"))
+```
+
+### Añadir elementos de bajo nivel
+```{r}
+# abline: Puede ser de dos tipos: “v”, vertical en el punto “x”, u “h”, horizontal en el punto “y”.
+hist(normal.values, 
+     ylab = "Frecuencia", 
+     xlab = "Valores",
+     main = "Histograma", 
+     col = "grey", 
+     border = "blue")
+
+abline(v=mean(normal.values), lty = 2, lwd = 3, col = "darkgreen")
+abline(v=median(normal.values), lty = 3, lwd = 3, col = "red")
+
+
+# points: Dibuja puntos en las coordenadas “x” e “y”.
+# lines: Pinta líneas en las coordenadas “x” e “y”.
+set.seed(123)
+a <- sample(1:100, 10, replace = F)
+b <- sample(1:100, 10, replace = F)
+
+plot(a,b, main = "A ~ B", las = 1)
+points(a,b, col = "red")
+lines(a,b, col = "darkblue")
+abline(h=mean(b), lty = 3, lwd = 3, col = "forestgreen")
+abline(v=mean(a), lty = 3, lwd = 3, col = "forestgreen")
+
+
+```
+

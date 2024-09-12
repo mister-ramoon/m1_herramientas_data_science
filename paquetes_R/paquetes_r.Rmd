@@ -1,0 +1,147 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Procesamiento de datos con Dplyr
+
+```{r}
+head(storms)
+```
+
+```{r}
+summary(storms)
+```
+### Filter
+```{r}
+# Seleccionaremos sólo las filas con valor -65.9 en la columna 'long'.
+filter(storms, long == -65.9, year == 1981)
+```
+### Select
+```{r}
+# Con la función select se seleccionan las columnas que se quieran utilizar.
+select(storms, name, status)
+```
+```{r}
+select(storms[0:5,], year:hour)
+```
+```{r}
+# starts_with: Selecciona columnas que comienzan con una cadena de texto.
+
+head(select(storms, starts_with("y")), 2)
+```
+```{r}
+# ends_with: Selecciona columnas que finalizan con una cadena de texto.
+head(select(storms, ends_with("2")), 2)
+```
+
+```{r}
+# contains: Selecciona columnas que contienen una cadena de texto.
+head(select(storms, contains("on")), 2)
+```
+
+### Operador Pipe % > %
+```{r}
+# Se puede utilizar un operador que nos permite concatenar funciones %>%.
+
+filter(storms, long == -65.9, year == 1981) %>% select(wind, pressure) %>% summary
+```
+### Mutate
+```{r}
+# La función mutate, es utilizada para crear columnas con base en otras ya existentes. 
+mutate(storms, 
+       presion_ratio = round(pressure / wind),2) %>% select(pressure, wind, presion_ratio) %>% head(., 5)
+```
+### Transmute
+```{r}
+# Es igual a mutate. Sin embargo, transmute realiza la operación, pero solamente devuelve las nuevas columnas.
+transmute(storms, 
+          presion_ratio = round((pressure / wind),2) ,
+          mean_ratio_wind = presion_ratio/mean(wind)) %>% head(.,10)
+```
+### Summarise
+```{r}
+# La función summarise permite confeccionar resúmenes sobre los datos de forma personalizada y muestra estadísticas sobre variables.
+
+# first: muestra el primer elemento de una columna del dataframe.
+# last: muestra el último elemento de una columna del dataframe.
+# n: elementos de la columna del dataframe.
+# n_distinct: número de elementos únicos de la columna del dataframe.
+storms %>% summarise(sum_pressure = sum(pressure),
+                     min_wind = min(wind),
+                     max_wind = max(wind),
+                     range_wind = (max(wind) - min(wind)),
+                     first_row_status = first(status),
+                     last_row_status = last(status),
+                     unique_categories = n_distinct(category),
+                     total_rows = n())
+```
+### Group_by
+```{r}
+# Podemos mostrar el dataframe agrupado por variables o estadísticas de estas.
+storms %>% group_by(category, status) %>%
+           summarise(media_viento = mean(wind),
+                     total_category = n())
+```
+
+### Distinct
+```{r}
+# Elimina filas duplicadas de un dataframe.
+df <- data.frame("col_uno"=c(1,2,3,4,5,6,6), "col_dos"= c(1,7,8,4,5,6,6))
+distinct(df)
+```
+
+### Rename
+```{r}
+# Se pasa como argumento el dataframe y el nuevo nombre que se utilizará para una columna determinada. 
+
+rename(storms, tipo = status)
+```
+
+### Arrange
+```{r}
+# La función arrange se utiliza para ordenar un dataframe de dos formas diferentes.
+arrange(storms, lat, long) %>% head(., 10)
+```
+```{r}
+arrange(storms, desc(year)) %>% head(., 10)
+```
+### Sample_n
+```{r}
+# Devuelve una muestra de n filas aleatorias.
+sample_n(storms, 5)
+```
+# Sample_frac
+```{r}
+# Devuelve una muestra aleatoria del dataframe de forma porcentual.
+sample_frac(storms, 0.01)
+```
+
+# Procesmaiento de datos con Tidyr
+
+### Spread
+```{r}
+# Toma columnas en modo “clave:valor” y las pivota para crear columnas en función de los valores únicos del campo clave.
+spread(table2, type, count)
+```
+### Gather
+```{r}
+# Gather es el caso contrario de spread, ya que, en lugar de pivotar filas para crear columnas, aumenta la dimensionalidad en cuanto a filas. 
+gather(billboard, "week", "sales", 4:ncol(billboard))
+```
+
+### Separate
+```{r}
+# Teniendo en cuenta un carácter, devuelve tantas columnas como elementos sea posible separar.
+aux.tidy.billboard <- gather(billboard, "week", "sales", 4:ncol(billboard))
+separate(aux.tidy.billboard, date.entered, into = c("year", "month", "day"), sep = "-") %>% head()
+```
+### Unite
+```{r}
+# Junta n columnas en una sola, a través un separador común
+tidy.billboard <- separate(aux.tidy.billboard, date.entered, into = c("year", "month", "day"), sep = "-")
+
+new.billboard <- unite(tidy.billboard, "full_song_name", artist, track, sep = ' - ')
+head(new.billboard)
+```
+

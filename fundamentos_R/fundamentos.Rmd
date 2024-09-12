@@ -1,0 +1,721 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
+
+# Sintaxis Básica
+
+## Alacenamiento
+
+```{r}
+a <- 1
+ls()
+```
+
+### Eliminar en memoria
+
+```{r}
+rm(a)
+print(ls())
+```
+
+## Comentarios
+
+```{r}
+# Comentario de una línea
+"
+Comentario
+Multilínea
+"
+```
+
+## Operadores
+
+### Operadores Aritméticos
+
+```{r}
+a <- 1
+
+# Suma
+a + b
+
+# Resta
+a -b
+
+# Multiplicación
+a * b
+
+# División
+a / b
+
+# Exponecial
+a ^ b
+
+# Módulo o resto de división
+a %% b
+
+# División Entera
+a %/% b
+```
+
+### Operadores de comparación
+
+```{r}
+# Menor que
+a < b
+
+# Mayor que
+a > b
+
+# Menos o igual que
+a <= b
+
+# Mayor o igual que
+a >= b
+
+# Igualdad
+a == b
+
+#No es igual que
+a != b
+```
+
+### Operadores Logísticos
+
+```{r}
+# Negación
+!(TRUE) # Equivalente con TRUE
+
+# AND Lógico
+TRUE & TRUE
+TRUE & FALSE
+
+# OR Lógico
+TRUE | FALSE
+FALSE | FALSE
+```
+
+## Tipos de variable
+
+```{r}
+# Númericas
+class(5)
+
+# Flotantes
+class(3.9)
+
+# Carácter
+class("Hola")
+  
+# Booleanos
+class(TRUE)
+class(T)
+
+# Factor
+class(as.factor('A'))
+```
+
+# Estructura de datos
+
+## Vectores
+
+```{r}
+a <- c(1,3.0,7,'hola') 
+# Indexar Vectores
+
+# Primera posición
+a[1]
+
+# Posición n
+a[4]
+
+# Rango de posiciones
+a[2:4]
+
+# Excluir elementos
+a[-2]
+
+# A través de vector lógico
+a[c(T, F, F, T)]
+```
+
+```{r}
+# Operaciones sobre vector
+
+b <- c(1, 30, 4, 56, 9)
+
+# Suma a todos los elementos de 4
+b + 4
+
+# Resta a todos los elementos de 3
+b - 3
+
+# Todos los elementos al cuadrado
+b ^ 2
+
+# Resta vectores
+c <- c(3, 50, 4, 3, 0)
+b - c
+
+# Producto de vectores, elemento a elemento
+c * b
+```
+
+```{r}
+# Funciones de vectores
+
+# lenght: longitud de un vector
+length(b)
+length(a)
+length(c)
+
+# sum: realiza la suma de todos los elementos del vector
+sum(b)
+
+# prod: realiza el producto de todos los elementos del vector.
+prod(b)
+
+# min: devuelve el elemento mínimo del vector.
+min(b)
+
+# max: devuelve el elemento máximo de un vector.
+max(b)
+
+# range: devuelve el rango del vector, es decir, de su elemento mínimo a máximo.
+range(b)
+
+# var: devuelve la varianza del vector.
+var(b)
+
+# sd: devuelve la desviación estándar del vector.
+sd(b)
+
+# cumsum: devuelve la suma acumulada elemento a elemento del vector.
+cumsum(b)
+
+# comprod: devuelve el producto acumulado del elemento vector elemento a elemento.
+comprod(b)
+
+# sqrt: raíz de todos los elementos del vector.
+sqrt(b)
+
+```
+
+```{r}
+# Sucesiones
+
+# Rango definido
+d <- c(1:20)
+
+# seq: generar secuencias.
+seq(-10, 20, 2)
+seq(0, 1, 0.1)
+
+# rep: generar vectores de números repetidos
+rep(2, 200)
+rep(1:10, 3)
+
+# sample: generar valores con remplazamiento
+no.rep <- sample(1:10, 10, remplace=F)
+si.rep <- sample(30:45, 10, remplace=T)
+
+# Expresiones booleanas
+z <- rep(1:20, 3)
+
+z[z < 7] <- 1
+
+z[z != 19]
+
+# sort: ordenamiento del vector.
+no.rep.dos <- sample(30:60, 10, replace = F)
+sort(no.rep.dos.decreasing = T)
+```
+
+## Array
+
+```{r}
+# Función Array
+my.arr <- array(data = c(1,2,3,4), dim = c(2,2))
+
+# Función dim(dimensión)
+dim(my.array)
+
+# Vector existente
+dim(no.rep.dos) <- c(5,2)
+```
+
+```{r}
+# Indexar Arrays
+new.arr <- array(1:40, c(5,4,2))
+print(new.arr)
+
+# Primer dimensión
+new.arr[,,1]
+
+# Columna 2 de las dos dimensiones.
+new.arr[,21:2]
+
+# Fila 4 de la segunda dimensión
+new.arr[4,2]
+
+# Elementos en tercera y cuarta posición de la quinta fila, de ambas dimensiones.
+new.arr[5,c(3,4)]
+
+# Todas las filas de la segunda columna en adelante de la primera dimensión
+new.arr[,2:length(new.arr[1,,1]),1]
+
+# Indexar array a través de otro array.
+index <- array(c(2, 1:3, 1:2), c(2, 3))
+```
+
+```{r}
+# Operaciones aritméticas
+
+# sum: suma
+sum(new.arr)
+
+# mean: media
+mean(new.arr)
+
+# range: rango
+range(new.arr)
+
+# max: Máximo
+max(new.arr)
+
+```
+
+```{r}
+# Operaciones especiales
+
+# Suma de los elementos de la segunda fila de la primera dimensión.
+sum(new.arr[2,,1])
+
+# Suma de columnas por fila
+colSums(new.arr, dims = 1)
+
+# Suma de todas las columnas por columna
+colSums(new.arr, dims = 2)
+
+# Suma de todas las filas por fila
+rowSums(new.arr, dims = 1)
+
+# Suma de todas las filas por columna
+rowSums(new.arr, dims = 2)
+
+# Media de columnas por columna
+colMeans(new.arr, dims = 1)
+
+# Media de columnas por dimensión
+colMeans(new.arr, dims = 2)
+
+# Media de filas por fila
+rowMeans(new.arr, dims = 1)
+
+# Media de filas por dimensión
+rowMeans(new.arr, dims = 2)
+```
+
+```{r}
+# aperm: permutar las dimensiones de un array.
+aperm(new.arr)
+class(new.arr)
+```
+
+## Listas
+
+```{r}
+my.list <- list(c(1:40))
+my.list[1]
+my.list[[1]][5]
+
+# Nombres
+new.list <- list(alumnos = c('Juan', 'María', 'Alfredo'),
+                 calificaciones = c(7, 4, 5, 9))
+
+# Accedder
+new.list$alumnos
+new.list[['alumnos']]
+
+# Agregar elementos
+new.list$alumnos <- c(new.list$alumnos, "Nuevo Alumno")
+new.list$alumnos
+
+new.list$edad <- c(15, 16, 17, 5)
+new.list
+
+# Clase propia
+class(new.list)
+```
+
+## Factores
+
+```{r}
+# Categoría
+var.cat <- factor(c("Enero", "Febrero", "Marzo", "Abril"))
+
+# Niveles
+levels(var.cat)
+
+# Clase propia
+class(var.cat)
+
+# Eliminar niveles
+var.cat = droplevels(x = var.cat, "Marzo")
+```
+
+## Matrices
+
+```{r}
+my.mat <- matrix(1:30, ncol = 6, nrow = 5, byrow = F)
+
+# ncol: devuelve el número de columnas
+ncol(my.mat)
+
+# nrow: devuelve el número de filas
+nrow(my.mat)
+
+# diag: devuelve la diagonal de la matriz
+diag(my.mat)
+
+# crossprod : realiza el producto entre dos matrices
+crossprod(x = my.mat, y = my.mat)
+
+# t: devuelve la traspuesta de la matriz
+t(my.mat)
+
+# svd: valores singulares de la matriz.
+svd(my.mat)
+
+# eigen: realiza cálculos de autovalores y autovectores (la matriz tiene que ser regular)
+regular.mat <- matrix(1:9, ncol = 3, nrow = 3, byrow = F)
+eigen(regular.mat)
+
+# as.matrix: transformar un vector como matriz
+new.mat <- new.arr[,,1]
+as.matrix(new.mat)
+
+# Clase propia
+class(my.mat)
+```
+
+## Dataframes
+
+```{r}
+# sep: parámetro que identifica los separadores de un dataframe
+# header: parámetro que se utiliza utilizar la primera fila como cabecera de un dataframe.
+# ns.string: parámetro para tratar valores nulos en nuestro data frame
+
+# read.csv: leer un csv
+df <- read.csv("FB.csv")
+
+# Columnas 
+df$Open
+df[[2]]
+df[['Open']]
+
+# Suma de la variable Open
+sum(df$Open)
+
+# Mostramos las posiciones 3 a 8 de la variable Open
+df$Open[3:8]
+
+# Filtramos la variable open por todos los valores superiores o iguales que 40
+ df[df$Open >= 40, ]
+ 
+# Seleccionamos las filas 100 a 110 de todas las columnas a excepción de la segunda y tercera
+df[100:110, -c(2,3)]
+
+# Clase propia
+class(df)
+```
+
+```{r}
+# Funciones de Dataframes
+
+# attach: trabajar con una variable, cargando todas las columnas
+attach(df)
+
+# detach: finalizar el trabajo del dataframe
+detach(df)
+
+# summary: devuelve un resumen estadístico de un dataframe
+summary(df)
+
+# str: devuelve el tipo de variable del dataframe
+str(df)
+
+# attributes: devuelve el nombre de las filas y columnas.
+attributes(df)
+
+# dim: dimensiones del dataframe, filas x columnas
+dim(df)
+
+# colnames: nombre de las columnas del dataframe
+colnames(df)
+
+# rownames: nombre de las filas del dataframe
+rownames(df)
+
+# nrow: número de filas
+nrow(df)
+
+# ncol: número de columnas
+ncol(df)
+
+# head: primeras posiciones del dataframe
+head(df)
+head(df, 10)
+
+# tail: últimas posiciones del dataframe
+tail(df)
+tail(df, 10)
+```
+
+```{r}
+# Transformaciones del dataframe
+
+# rbind: añadir una nueva fila
+df <- rbind(df, c("2013-03-01", 35.12, 39.32, 32.75, 34.65, 57052800, 34.65), stringsAsFactors=T)
+tail(df)
+
+# cbind: añadir una nueva columna
+index.list <- list(index=1:nrow(df))
+
+df <- cbind(df, index.list)
+head(df)
+
+# $: otra forma de añadir una columna
+df$Nueva_columna <- '^'(as.numeric(df$High),2)
+head(df)
+
+# NULL: eliminar una variable
+df$index <- NULL
+
+# subset: obtener el conjunto del dataframe
+# select: parametro para seleccionar las columnas a tener en cuenta en la función subset
+
+muestra <- subset(df, select = c("High", "Low"))
+
+# order: ordenar el datadrame.
+ordered <- df[order(df$Open, decreasing = T), ]
+head(ordered)
+
+# names: acceder a los nombres de variables para renombrarlas
+names(df)[2] <- "Precio-Apertura"
+
+# as.dataframe para convertir tu variable en dataframes
+new.df <- as.data.frame(new.arr)
+```
+
+```{r}
+# Gestionar valores nulos
+
+# Valor nulo
+new.df[3, 1] <- NA
+
+# Comprobar si hay un nulo en nuestro dataframe
+summary(new.df)
+
+# is.na: comprobar si hay un nulo en nuestro dataframe
+is.na(new.df)
+
+# complete.cases: detectar filas donde hay nulos en nuestro dataframe
+complete.cases(new.df)
+
+# Borrar casos nulos
+new.df <- new.df[complete.cases(new.df), ]
+
+# Remplazar valores nulos
+new.df <- as.data.frame(new.arr)
+new.df[3, 2] <- NA
+
+new.df$V2[which(is.na(new.df$V2))] <- 1000
+```
+
+# Herramientas de control de flujo
+
+### Condicionales
+```{r}
+# if else
+number <- 6
+
+if (number > 5) {
+  print(number*2)
+} else {
+  print(number / 2)
+}
+
+# Creamos un vector
+my.vec <- c(3, 4, 9, 10, 2, 20)
+
+if (max(my.vec) >= (2*min(my.vec))) {
+  print(min(my.vec)^2)
+} else {
+  print(max(my.vec)^2)
+}
+
+# if else anidado
+a <- 13
+
+if (a > 10) {
+  if(a %% 2 == 0) {
+    print(T)
+  } else {
+    print(F)
+  }
+} else {
+  print(a / 2)
+}
+
+# if apilado
+vec <- c(3, 5, 13, 9, 5, 7, 8)
+if (max(vec) %% 2 == 0) {
+  print(max(vec)^3)
+} else if (min(vec) > 10) {
+  print(sum(vec))
+} else {
+  print(prod(vec))
+}
+```
+
+### Bucles
+```{r}
+# for
+for (i in 1:10) {
+  print(i^3)
+}
+
+my.mat <- matrix(1:30, nrow=3, ncol=3)
+for (fila in 1:dim(my.mat)[1]) {
+  cat('Elemento: ', fila, ' ', columna, ' --> ', fila*columna, '\n')
+}
+
+# while
+while (i < 6) {
+  print(i)
+  i <- i+1
+}
+x <- c(100, 2, 3, 900, 4)
+
+index <- 1
+while (index <= length(x)){
+  print(x[index] * index)
+  index <- index + 1
+}
+
+# repeat 
+x <- 1
+
+repeat {
+  print(x)
+  
+  x <- x + 1
+  
+  if(x == 6){
+    break
+  }
+}
+
+# next 
+v <- c(1, 20, 3, 4, 7, 9, 100, 133, 1000)
+
+for (item in 1:length(v)){
+  if (v[item] %% 2 == 0) {
+    next
+  } else {
+    print(item * v[item])
+  }
+}
+```
+# Funciones
+```{r}
+exp.test <- function(number) {
+  result <- number ^ 2
+  return(result)
+}
+a <- exp.test(number = 3)
+
+
+exp.test <- function(number, pow){
+  result <- number ^ pow
+  return (result)
+}
+a <- exp.test(number = 3, pow = 4)
+
+
+min.max <- function(v) {
+  my.list <- list()
+  my.list$min <- min(v)
+  my.list$max <- max(v)
+  return (my.list)
+}
+results <- min.max(v = c(100, 20, 34, 8))
+```
+
+
+```{r}
+# apply: realiza una misma operación sobre los ejes.
+m <- matrix(c(1:10), nrow = 5, ncol = 2)
+apply(m, 2, sum)
+
+# lapply: realiza una misma operación sobre las listas
+v <- matrix(1:10, ncol = 2, nrow = 5)
+v.2 <- matrix(5:15, ncol = 2, nrow = 5)
+lista = list(v, v.2)
+
+# sapply: recibe una lista, aplica una función y devuelve un vector
+sapply(lista, sum)
+
+# tapply: realiza una operación en función de un vector de factores
+v.num <- c(10:20)
+v.fact <- c("PAR", "IMPAR", "PAR", "IMPAR", "PAR", "IMPAR",
+"PAR", "IMPAR", "PAR", "IMPAR", "PAR")
+
+tapply(v.num, v.fact, sum)
+
+# mapply: opera entre matrices o vectores y devuelve el resultado como una lista o vector
+mapply(sum, v, v.2, 1)
+
+# is.character: devuelve un booleano en función de si la variable es o no caracter
+a <- "hola"
+is.character(a)
+
+# is factor: evuelve un booleano en función de si la variable es o no categórica
+b <- as.factor("hola")
+
+# is.numeric: devuelve un booleano en función de si la variable es numérica o no
+is.numeric(a)
+
+# as.character: transforma una variable categórica o numérica a caracter
+a <- factor(c("UNO", "DOS"))
+levels(a)
+
+new.a <- as.character(a)
+
+# as.numeric: transforma en variable numérica una variable categórica.
+as.numeric(a)
+
+# as.factor: permite transformar a factor un vector, ya sea numérico o de carácteres
+a <- c(1,2,1,2)
+b <- c("hola", "adios", "hola", "hola", "adios")
+
+ as.factor(a)
+
+# table: muestra la frecuencia de los valores únicos de una variable
+ 
+table(b)
+
+# unique: muestra los valores únicos de una variable
+y <- c(1, 2, 3, 5, 9, 1, 2, 3, 9, 0)
+unique(y)
+
+# set.seed: replica siempre el mismo resultado
+set.seed(777)
+
+# data.frame: permite crear de cero un dataframe a través de vectores o matrices
+df <- data.frame("ventas_q1" = v[ ,1], "ventas_q2" = v[ ,2],
+"ventas_q3" = v.2[ ,1], "ventas_q4" = v.2[ ,2])
+```
+

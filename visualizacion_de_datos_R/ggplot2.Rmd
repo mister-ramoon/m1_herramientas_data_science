@@ -1,0 +1,162 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+# Gráficos en capas Ggplot2
+```{r}
+# dataframe midwest
+summary(midwest)
+str(midwest)
+head(midwest)
+```
+```{r}
+# Se ordenan los datos.
+library(tidyr)
+library(dplyr)
+```
+```{r}
+df <- gather(midwest, "pop_category", "population", c(5:11, 17, 21))
+df <- gather(df, "per_category", "pervalue", 5:17)
+
+# La gran mayoría de estas variables podrían dejarse como as.character sin problema.
+df <- df %>% transmute(
+  PID = as.factor(PID),
+  county = as.factor(county),
+  state = as.factor(state),
+  area = area,
+  inmetro = inmetro,
+  category = as.factor(category),
+  pop_category = as.factor(pop_category),
+  population = population,
+  per_category = as.factor(per_category),
+  pervalue = pervalue
+)
+summary(df)
+
+colnames(df)
+```
+### Diagrama de disperción
+```{r}
+# geom_point
+ggplot(data = df) +
+  geom_point(mapping = aes(x = pervalue, y = population))
+```
+
+```{r}
+# mapping: define los componentes estéticos ("aes")
+# data: dataframe de origen.
+# geom_: capas de interacción gráfica.
+# color: agregar color a la gráfica
+ggplot(data = df) + geom_point(mapping = aes(x = pervalue, y = population, color = state))
+
+ggplot(data = df) +
+  geom_point(mapping = aes(x = pervalue, y = population), color = "dodgerblue4")
+
+```
+```{r}
+# size: tamaño del punto
+ggplot(data = df) +
+  geom_point(mapping = aes(x = pervalue, y = population, size = state))
+
+# alpha: opacidad
+ggplot(data = df) +
+  geom_point(mapping = aes(x = pervalue, y = population, alpha = state))
+
+# shape: forma
+ggplot(data = sample_frac(df, 0.001)) +
+  geom_point(mapping = aes(x = pervalue, y = population, shape = state))
+```
+
+## Tipos de gráficas
+
+### Gráfico de barras
+```{r}
+# geom_bar
+ggplot(df) + 
+  geom_bar(mapping = aes(state, fill = state), color = "black")
+
+```
+
+### Gráfico de cajas
+```{r}
+# geom_boxplot
+#
+ggplot(df) + 
+  geom_boxplot(mapping = aes(x = pervalue, fill = state), outlier.colour = "red") + coord_flip()
+```
+
+### Gráfico de densidad
+```{r}
+# geom_density
+ggplot(df) +
+  geom_density(mapping = aes(area), colour = "darkblue", fill = "darkblue", alpha = 0.4)
+ggplot(df) +
+  geom_density(mapping = aes(area, fill=state), colour = "darkblue", alpha = 0.4)
+```
+ 
+### Histograma
+```{r}
+# geom_histogram
+ggplot(df) +
+  geom_histogram(mapping = aes(area), color = "red", fill = "lightblue", alpha = 0.6)
+
+ggplot(df) +
+  geom_histogram(mapping = aes(area, fill = state), color = "red" )
+
+# binwidth: definir anchura de barra.
+ggplot(df) +
+  geom_histogram(mapping = aes(area), color = "blue", binwidth = 0.02)
+
+# bins: fuerza a mostrar un número fijo de barras vericales
+ggplot(df) +
+  geom_histogram(mapping = aes(area), color = "blue", bins=100)
+```
+### Histograma con driagrama de densidad
+```{r}
+ggplot(df, aes(area)) +
+  geom_histogram(aes(y=..density..), color = "blue", bins=100) +
+  geom_density(colour = "darkblue", fill = "pink", alpha = 0.4)
+
+# Si se quiere que los valores de relleno no se agrupen en forma de frecuencia acumulada, se utilizará el parámetro dodge con el valor identity.
+ggplot(df) +
+  geom_histogram(mapping = aes(area, fill=state), color = "blue", position = "dodge")
+
+ggplot(df) +
+  geom_histogram(mapping = aes(inmetro, fill=state), color = "blue", position = "dodge")
+```
+```{r}
+# Superponer la posición de elementos con valor identity
+ggplot(df) +
+  geom_histogram(mapping = aes(area, fill=state), color = "blue", position = "identity")
+
+ggplot(df) +
+  geom_freqpoly(mapping = aes(area, colour=state))
+```
+### Smooth
+```{r}
+# geom_smooth: corresponderá al intervalo de confianza 
+ggplot(df) +
+  geom_point(mapping = aes(population, area)) + geom_smooth(aes(population, area))
+```
+## Elementos de texto
+```{r}
+# ggtitle
+# xlab
+# ylab
+
+ggplot(df) +
+  geom_point(mapping = aes(population, area)) + geom_smooth(aes(population, area)) + 
+  ggtitle("Población ~ área") + 
+  xlab("Población") +
+  ylab("Área")
+```
+
+## Facetting
+```{r}
+# Descomponer una gráfica en tantas gráficas como valores únicos tenga una variable
+ggplot(df, mapping = aes(area)) +
+  geom_bar(aes(fill=state)) +
+  facet_wrap( ~ state)
+```
+
+

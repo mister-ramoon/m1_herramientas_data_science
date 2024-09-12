@@ -1,0 +1,167 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Gráficos dinámicos Plotly
+```{r}
+x <- c(1, 2, 3, 8, 7, 5, 6)
+y <- c(4, 5, 6, 2, 10 ,12, 5)
+```
+
+### Diagrama de Dispersión
+```{r}
+fig <- plot_ly(
+  x = x, 
+  y = y,
+  type = "scatter"
+)
+fig
+
+fig.sizes <- plot_ly (
+  x = x,
+  y = y,
+  type = "scatter",
+  mode = "markers",
+  size = 3,
+  alpha = 0.9
+)
+fig.sizes
+```
+```{r}
+# line
+fig.line <- plot_ly (
+  x = x,
+  y = y,
+  type = "scatter",
+  mode = "lines"
+)
+
+fig.line 
+
+fig.line <- plot_ly (
+  x = x,
+  y = y,
+  type = "scatter",
+  mode = "lines+markers"
+)
+
+fig.line 
+```
+
+```{r}
+# Utilizadon Dataframe "iris" con plot_ly
+fig <- plot_ly(
+  data = iris, x = ~Sepal.Width, y = ~Petal.Width,
+  type = "scatter",
+  color = ~Species, size = ~Sepal.Width
+)
+fig
+```
+```{r}
+vec.1 <- c(1:100)
+random_y <- rnorm(100, mean = 0)
+
+data <- data.frame("norm_1" = vec.1, 
+                   "norm_2" =random_y)
+
+fig <- plot_ly(data, x = ~norm_1, y = ~norm_2, 
+               type = 'scatter', 
+               mode = 'lines')
+fig
+```
+## Diagrama de barras
+```{r}
+fig.bar <- plot_ly(
+  x = x,
+  y = y,
+  type = "bar"
+)
+fig.bar
+```
+```{r}
+fig <- plot_ly(
+  x = c("Manzanas", "Naranajas", "Sandías"),
+  y = c(300, 245, 283),
+  name = "Ventas",
+  type = "bar"
+)
+
+fig
+```
+```{r}
+fig.bar <- plot_ly (
+  data = iris,
+  x = ~Sepal.Length,
+  y = ~Sepal.Width,
+  type = "bar",
+  color = ~Species
+)
+
+fig.bar 
+```
+### Añadir textp a una gráfica
+```{r}
+# title
+# xaxis
+# yaxis
+
+x <- c(1, 2, 3, 8, 7, 5, 6, 2, 4, 14, 16, 19, 23, 5, 8)
+y <- c(4, 5, 6, 2, 10 ,12, 5, 9, 10, 11, 23, 4, 7, 6, 8)
+f <- factor(c("VALUE1", "VALUE2", "VALUE1", "VALUE1", "VALUE2", "VALUE1", "VALUE1", 
+              "VALUE1", "VALUE2", "VALUE1", "VALUE1", "VALUE2", "VALUE1", "VALUE1", "VALUE2"))
+z <- sample(15:30, 15, replace = F)
+d <- data.frame("x" = x, "y" = y, "f" = f, "z" = z)
+
+fig <- plot_ly(iris, x = ~x, y = ~y, 
+               text = ~f, color = ~f,
+               type = 'scatter', mode = 'markers', 
+        marker = list(size = ~z, opacity = 0.5))
+
+fig <- fig %>% layout(title = 'X ~ Y',
+         xaxis = list(title = "Vector X"),
+         yaxis = list(title = "Vector Y"))
+
+fig
+```
+
+## Histograma
+```{r}
+fig <- plot_ly(x = ~rnorm(500),
+               alpha = 0.6, 
+               type = "histogram")
+
+fig
+```
+```{r}
+fig <- plot_ly(alpha = 0.6)
+fig <- fig %>% add_histogram(x = ~rnorm(500))
+fig <- fig %>% add_histogram(x = ~rnorm(500) + 1)
+fig <- fig %>% layout(barmode = "overlay") # "stack" | "group" | "overlay" | "relative"
+
+fig
+```
+
+## Boxplot
+```{r}
+fig <- plot_ly(y = ~rnorm(50), type = "box") %>% 
+  layout(title = "Boxplot",
+             xaxis = list(showgrid = FALSE),
+             yaxis = list(showgrid = FALSE))
+
+fig
+```
+
+## Diagrama de sectores
+```{r}
+fig <- plot_ly(
+  data = iris,
+  labels = ~Species,
+  values = ~Sepal.Length,
+  type = 'pie'
+) %>% layout(title = "Diagrama de sectores por Species",
+             xaxis = list(showgrid = FALSE),
+             yaxis = list(showgrid = FALSE))
+fig
+```
+
