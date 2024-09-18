@@ -1,0 +1,47 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# TITULO
+
+## Subtitulo
+
+### Tercer Nivel
+
+Hola esto es una cadena de texto
+
+Esta palabra esta en _cursiva_ o tambien *Curisiva*
+
+Esta palabra esta en __negrita__ o también **negrita**
+
+- Elemento 1
+- Elemento 2
+
+1. Uno
+2. Dos
+3. Etc
+
+- Elemento
+  - Sub-elemento
+  
+```{r}
+# Esto es una celda
+a <- 5
+```
+```{r}
+b <- 9
+```
+
+```{r}
+c <- c(5,8,9)
+plot(c)
+```
+```{r}
+# Instalar Paquetes
+install.packages("gpplot2")
+
+# t <- 7
+```
+
+  
