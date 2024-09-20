@@ -36,12 +36,13 @@ Multilínea
 
 ```{r}
 a <- 1
+b <- 2
 
 # Suma
 a + b
 
 # Resta
-a -b
+a - b
 
 # Multiplicación
 a * b
@@ -194,8 +195,8 @@ sd(b)
 # cumsum: devuelve la suma acumulada elemento a elemento del vector.
 cumsum(b)
 
-# comprod: devuelve el producto acumulado del elemento vector elemento a elemento.
-comprod(b)
+# cumprod: devuelve el producto acumulado del elemento vector elemento a elemento.
+cumprod(b)
 
 # sqrt: raíz de todos los elementos del vector.
 sqrt(b)
@@ -217,8 +218,8 @@ rep(2, 200)
 rep(1:10, 3)
 
 # sample: generar valores con remplazamiento
-no.rep <- sample(1:10, 10, remplace=F)
-si.rep <- sample(30:45, 10, remplace=T)
+no.rep <- sample(1:10, 10, replace =F)
+si.rep <- sample(30:45, 10, replace =T)
 
 # Expresiones booleanas
 z <- rep(1:20, 3)
@@ -229,7 +230,7 @@ z[z != 19]
 
 # sort: ordenamiento del vector.
 no.rep.dos <- sample(30:60, 10, replace = F)
-sort(no.rep.dos.decreasing = T)
+## sort(no.rep.dos.decreasing = T)
 ```
 
 ## Array
@@ -239,7 +240,7 @@ sort(no.rep.dos.decreasing = T)
 my.arr <- array(data = c(1,2,3,4), dim = c(2,2))
 
 # Función dim(dimensión)
-dim(my.array)
+dim(my.arr)
 
 # Vector existente
 dim(no.rep.dos) <- c(5,2)
@@ -254,13 +255,13 @@ print(new.arr)
 new.arr[,,1]
 
 # Columna 2 de las dos dimensiones.
-new.arr[,21:2]
+new.arr[21:1]
 
 # Fila 4 de la segunda dimensión
-new.arr[4,2]
+new.arr[,4,2]
 
 # Elementos en tercera y cuarta posición de la quinta fila, de ambas dimensiones.
-new.arr[5,c(3,4)]
+#new.arr[5,c(3,4)]
 
 # Todas las filas de la segunda columna en adelante de la primera dimensión
 new.arr[,2:length(new.arr[1,,1]),1]
@@ -588,9 +589,9 @@ for (i in 1:10) {
 }
 
 my.mat <- matrix(1:30, nrow=3, ncol=3)
-for (fila in 1:dim(my.mat)[1]) {
+"for (fila in 1:dim(my.mat)[1]) {
   cat('Elemento: ', fila, ' ', columna, ' --> ', fila*columna, '\n')
-}
+}"
 
 # while
 while (i < 6) {
