@@ -1,0 +1,111 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# CASO PRÁCTICO 1
+
+1. Cargar el dataset como dataframe (el valor 999 es nulo) y mostrar sus primeras filas, su resumen estadístico y la estructura de sus columnas.
+
+```{r}
+# Cargar CSV
+df <- read.csv('IBM.csv')
+
+# Mostrar primeras filas
+head(df)
+```
+```{r}
+# Resumen estadístico
+summary(df)
+```
+```{r}
+# Estructura de Columnas
+str(df)
+```
+
+2. Reemplazar todos los valores nulos de la columna “Open” por su mediana.
+```{r}
+df$Open[which(is.na(df$Open))] <- median(df$Open, na.rm = T)
+summary(df)
+```
+3. Dividir la columna “Date” en “Día”, “Mes” y “Año”.
+```{r}
+df <- separate(df, Date, into = c("Día", "Mes", "Año"), sep=("/"))
+head(df)
+```
+
+4. Cambiar la columna “Año” a factor.
+```{r}
+df$Año <- as.factor(df$Año)
+head(df)
+```
+
+5. Devolver el precio más alto de cada año.
+```{r}
+df %>% select(Año, High) %>% group_by(Año) %>% summarise(max_año = max(High)) 
+```
+
+6. Mostrar una tabla de frecuencias para cada año.
+```{r}
+table(df$Año)
+```
+7. Obtener una nueva columna que se llame “Diferencias” y que sea el resultado de restar al precio más alto el precio más bajo.
+```{r}
+df$Diferencias <- df$High - df$Low
+head(df)
+```
+
+8. Ordenar el dataset de forma ascendente por la columna “Diferencias”.
+```{r}
+df = df[order(df$Diferencias),]
+head(df)
+```
+
+9. Mostrar un resumen estadístico del dataset en función de los siguientes valores por cada año:
+- Precio más alto de apertura.
+- Precio más bajo de cierre.
+- Media de la columna “Diferencia”.
+- Número de elementos para cada año.
+
+```{r}
+df %>% select(Año, Open, Close, Diferencias) %>% group_by(Año) %>% 
+  summarise(
+    max_open = max(Open),
+    min_close = min(Close),
+    mean_diff = mean(Diferencias),
+    n_elements = n()
+  )
+```
+
+10. Mostrar el sumatorio de la variable “Volumen” para todos los años.
+```{r}
+tapply(df$Volume, df$Año, sum)
+```
+
+11. Obtener dos histogramas para las variables de precio de apertura y cierre y rellenar los histogramas en función del año.
+```{r}
+# Apertura
+ggplot(df) +
+  geom_histogram(mapping = aes(x = Open, fill = Año))
+```
+```{r}
+# Cierre
+ggplot(df) +
+  geom_histogram(mapping = aes(x=Close, fill=Año))
+```
+12. Mostrar un diagrama de dispersión entre los precios más altos y bajos, además, muestra su recta de ajuste.
+```{r}
+ggplot(df) +
+  geom_point(mapping = aes(High, Low)) +  geom_smooth(mapping = aes(High, Low))
+```
+13. Obtener un diagrama de caja y bigotes de la variable “Adj.Close” por año.
+```{r}
+ggplot(df) +
+  geom_boxplot(mapping = aes(x = Adj.Close, fill = Año)) + coord_flip()
+```
+14. Mostrar para cada año un diagrama de densidad para la variable “Volume”.
+```{r}
+ggplot(df) +
+  geom_density(mapping = aes(Volume, colour = Año)) + facet_wrap(~Año)
+```
+

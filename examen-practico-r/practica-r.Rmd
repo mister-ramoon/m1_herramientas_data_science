@@ -1,0 +1,149 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Caso Práctico R
+
+1. Cargar el archivo “Airbnb_Milan.csv” como dataframe.
+```{r}
+# Cargar Dataframe
+df <- read.csv('Airbnb_Milan.csv')
+
+head(df)
+```
+
+2.Crear un nuevo dataframe que contenga únicamente las siguientes columnas:
+
+- host_is_superhost
+- host_identity_verified
+- bathrooms
+- bedrooms
+- daily_price
+- security_deposit
+- minimum_nights
+- number_of_reviews
+- review_scores_rating
+
+```{r}
+# Crear nuevo dataframe
+new_df <- subset(df, select = c(
+  'host_is_superhost',
+  'host_identity_verified',
+  'bathrooms',
+  'bedrooms',
+  'daily_price',
+  'security_deposit',
+  'minimum_nights',
+  'number_of_reviews',
+  'review_scores_rating'
+))
+
+head(new_df)
+```
+3. Cambiar los factores de la variable “host_is_superhost” de 0, 1 a: “SI” y, “NO”. (investigar la función recode).
+```{r}
+new_df$host_is_superhost <- recode(new_df$host_is_superhost, `0` = "No", `1` = "SI")
+
+head(new_df$host_is_superhost)
+```
+4. Cambiar los factores de la variable “host_identity_verified” de 0, 1 a: “VERIFICA” y “NO VERIFICA”.
+```{r}
+new_df$host_identity_verified <- recode(new_df$host_identity_verified, `0` = "NO VERIFICA", `1` = "VERIFICA")
+
+head(new_df$host_identity_verified)
+```
+5. Mostrar un resumen estadístico de los datos.
+```{r}
+summary(new_df)
+```
+6. Filtrar el dataset por apartamentos cuyo mínimo de noches sea igual o menor que siete.
+```{r}
+filter_df <- filter(new_df, minimum_nights <= 7)
+
+head(filter_df)
+```
+7. ¿Cuál es el precio medio por día de una habitación en función de si el anfitrión tiene verificado o no su perfil?
+```{r}
+mean_price_df <- new_df %>%
+  group_by(host_identity_verified) %>%
+  summarise(mean_price_df = mean(as.numeric(daily_price), na.rm = T))
+
+head(mean_price_df)
+```
+
+8. Quién tiene más número de reseñas, ¿un super host o no super host?
+```{r}
+reviews_df <- new_df %>%
+  group_by(host_is_superhost) %>%
+  summarise(reviews_df = sum(number_of_reviews, na.rm = T))
+
+head(reviews_df)
+```
+9. Sobre la estadística anterior ¿quién tiene la puntuación media más alta?
+```{r}
+score_df <- new_df %>%
+    group_by(host_is_superhost) %>%
+    summarise(score_df = mean(review_scores_rating, na.rm = T))
+
+head(score_df)
+```
+10. Crea un vector categórico llamado “CATEGORÍA”, en función de que, si para la puntuación de las reseñas tiene de 0 a 49, sea “NO ACONSEJABLE”; de 50 a 75 sea “ESTÁNDAR”; y de 76 a 100 sea “TOP”.
+```{r}
+new_df <- new_df %>%
+  mutate(
+    CATEGORIA = case_when(
+      review_scores_rating >= 0 & review_scores_rating <= 49 ~ "NO ACONSEJABLE",
+      review_scores_rating >= 50 & review_scores_rating <= 75 ~ "ESTÁNDAR",
+      review_scores_rating >= 76 & review_scores_rating <= 100  ~ "TOP",
+    )
+  )
+
+head(new_df)
+```
+
+11. Mostrar las frecuencias de la variable CATEGORÍA.
+```{r}
+table(new_df$CATEGORIA)
+```
+
+12. Obtener el histograma del precio por día.
+```{r}
+ggplot(new_df) +
+  geom_histogram(aes(x = daily_price), color = 'green', fill = 'green', alpha = 0.2) +
+  ggtitle("Histograma del preció por día") + 
+  xlab("Precio del día") +
+  ylab("Cantidad")
+```
+
+13. Estudiar la relación entre los dormitorios y baños de forma gráfica.
+```{r}
+ggplot(df) +
+  geom_point(mapping = aes(bathrooms, bedrooms)) + 
+  geom_smooth(aes(bathrooms, bedrooms)) +
+  ggtitle("Relación entre dormitorios y baños") + 
+  xlab("Dormitorios") +
+  ylab("Baños")
+```
+
+14. Mostrar un histograma del número de reseñas en función de si es un usuario verificado o no.
+```{r}
+ggplot(new_df) +
+  geom_histogram(mapping = aes(x = number_of_reviews, fill = host_identity_verified), color = 'blue', fill = 'blue', alpha = 0.3) +
+  ggtitle("Relación entre número de reseñas en base a los usuarios verificados") + 
+  xlab("Reseñas") +
+  ylab("Usuarios")
+```
+15. Mostrar un histograma por cada valor de “CATEGORÍA” en el que se enseñe la cuantía del depósito de seguridad en función de si el anfitrión es super host o no.
+```{r}
+ggplot(new_df) +
+  geom_histogram(mapping = aes(x = security_deposit, fill = host_identity_verified), color = 'red', fill = 'red', alpha = 0.3) +
+  facet_wrap(~CATEGORIA) +
+  ggtitle("Valores de cada categoría") + 
+  xlab("Reseñas") +
+  ylab("Usuarios")
+  
+```
+
+
+
